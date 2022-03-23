@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.net.SocketPermission;
 
+import javax.annotation.processing.SupportedOptions;
 import javax.swing.JPanel;
 
 public class Game extends JPanel{
@@ -10,10 +11,10 @@ public class Game extends JPanel{
         bola = new Bola();
         setFocusable(true);//para escultar os eventos 
         setLayout(null);//para não usar outros componentes da classe
-        new Thread(new Runnable() {
+        new Thread(new Runnable() {//cria um instância da classe thread como a classe interna anônima
             @Override
             public void run() {
-                gameLoop();
+                gameLoop();//função que dispara o mecanismo Ganeloop
             }
         }).start();
     }
@@ -25,8 +26,8 @@ public class Game extends JPanel{
             update();
             render();
             try {
-                Thread.sleep(17);
-            } catch (Exception e) {
+                Thread.sleep(17);//método que pausa a execução da thread
+            } catch (InterruptedException e) {
                 System.err.println(e);
             }
         }
@@ -35,9 +36,18 @@ public class Game extends JPanel{
     public void update(){
         bola.posX = bola.posX + bola.velX;
         bola.posY = bola.posY + bola.velY;
+        testecolisos();
     }
     public void render(){
-        repaint();
+        repaint();//invoca o método paintComponent() pra redesenhar a tela Gameloop
+    }
+    public void testecolisos(){
+        if(bola.posX + bola.raio *2 >= Pricipal.LARGURA_TELA || bola.posX <= 0){
+            bola.velX = bola.velX * -1;
+        }
+        if(bola.posY + bola.raio *2 >= Pricipal.ALTURA_TELA || bola.posY <= 0){
+            bola.velY = bola.velY * -1;
+        }
     }
 
     //método sobrescrito ----
@@ -46,6 +56,8 @@ public class Game extends JPanel{
         super.paintComponent(g);//garantir o desenho na tela
         setBackground(Color.LIGHT_GRAY);//atribui a cor ao fundo da tela
         g.setColor(Color.RED);//define a cor do objeto para vermelho
-        g.fillOval(bola.posX,bola.posY,bola.raio*2,bola.raio*2);// desenha o objeto em tela (local da telaX, local da telaY, Largura, Altura)
+        //g.fillOval(bola.posX-5,bola.posY-5,bola.raio*2,bola.raio*2);// desenha o objeto em tela (local da telaX, local da telaY, Largura, Altura)
+        //g.drawImage(bola.parada, bola.posX, bola.posY, null);
+        g.drawImage(bola.obterImagem(),bola.posX, bola.posY, null);
     }
 }

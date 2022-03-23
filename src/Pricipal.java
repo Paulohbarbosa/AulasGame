@@ -10,7 +10,7 @@ public class Pricipal {
         Game game= new Game();
         game.setPreferredSize(new Dimension(LARGURA_TELA, ALTURA_TELA));//nova forma de definindo as dimensões da Janela
         janela.getContentPane().add(game);//adciona o obj (game) dentro da janela
-        janela.setResizable(true);//possibilita o redimensionamento
+        janela.setResizable(false);//possibilita o redimensionamento
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// Garante que o app seja totalmente fechado
         janela.setLocation(100,100);// posição em que a janela vai ser redenizada na tela.
         janela.setVisible(true);//obrigatória para que a janela apareça
